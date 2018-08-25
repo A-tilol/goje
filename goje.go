@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -15,13 +14,21 @@ func getSearchWords(words []string) string {
 	return strings.Join(words, "+")
 }
 
+const usage = `goje is a Japanese<->English dictionary using weblio.
+
+Example (simple):
+	goje hello
+
+Example (how to search idiom):
+	goje first of all
+`
+
 func main() {
-	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr,
-			`Usage: Enter the search words
-        [Example] come from`)
-	}
 	flag.Parse()
+	if len(flag.Args()) == 0 {
+		fmt.Println(usage)
+		return
+	}
 
 	args := flag.Args()
 	words := getSearchWords(args)
